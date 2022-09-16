@@ -33,7 +33,7 @@
 
 
 (account default ()
-         (name "Hugo Hörnquist")
+         (name "Samuel Junesjö")
          (path-base ,mailfolder)
          (fancy-acc-name ,(string-titlecase (? acc-name)))
 
@@ -130,9 +130,15 @@
 
 
 
+(account proton (default)
+	(address "wnabee@protonmail.com")
+	(pass-path "Protonmail")
 
+	(IMAPAccount
+	  (Host "imap.protonmail.com"))
+)
 (account gmail (google)
-         (address "hugo.hornquist@gmail.com")
+         (address "samuel.junesjo@gmail.com")
          (pass-path "google.com/hugo.hornquist/mutt")
 
          #;
@@ -141,13 +147,13 @@
            (from "Hugo Hörnquist <hugo@hornquist.se>"))))
 
 (account lysator (default)
-         (address "hugo@lysator.liu.se")
-         (pass-path "lysator/mail/hugo")
+         (address "wnabee@lysator.liu.se")
+         (pass-path "lysatormail")
 
          (IMAPAccount
            (Host "imap.lysator.liu.se"))
 
-         (signature "hugo")
+         (signature "//Samuel")
 
          ;; if domain == lysator.liu.se
          ;; set record "=Lysator"
@@ -165,10 +171,10 @@
           (AuthMechs LOGIN)))
 
 (account liu (outlook)
-         (address "hugho389@student.liu.se")
-         (pass-path "liu/mail/hugho389")
+         (address "samju303@student.liu.se")
+         (pass-path "Studentmail")
 
-         (signature "Hugo Hörnquist (hugho389)")
+         (signature "MvH\nSamuel")
          (mutt (set (hostname "liu.se"))))
 
 (account liu-work (outlook)
@@ -254,17 +260,17 @@
               (imap_check_subscribed yes)
               (imap_list_subscribed yes)
               (ssl_starttls yes)
-              (smtp_url "smtp://hugo@mail.lysator.liu.se:26")
+              (smtp_url "smtp://wnabee@mail.lysator.liu.se:26")
               (smtp_pass ,(if static-passwords
-                              (pass/escape "lysator/mail/hugo"
+                              (pass/escape "lysatormail"
                                            (char-set #\" #\' #\`))
-                              "`pass lysator/mail/hugo`"))
+                              "`pass lysatormail`"))
               (ssl_force_tls yes)
               (assumed_charset "utf-8:iso-8859-1")
               (mbox_type "Maildir")
 
-              (realname "Hugo Hörnquist")
-              (from "Hugo Hörnquist <hugo@hornquist.se>")
+              (realname "Samuel Junesjö")
+              (from "Samuel Junesjö <wnabee@lysator.liu.se>")
 
               (markers no)
 
@@ -321,15 +327,15 @@
 
 (account mutt-global-gpg (mutt-global)
          (set
-           (spoolfile "/var/mail/hugo/Gmail/")
+           ;;(spoolfile "/var/mail/")
            (crypt_use_gpgme yes)
-           (pgp_default_key "E376B3821453F4BE1ED6F3C1265514B158C4CA23")))
+           (pgp_default_key "85D45A3135EA4AB1A683401A6E0A5CFFB28BC62A")))
 
 
 
 
 ;; check required environment:
-(define required-env '("PHONE"))
+(define required-env '(#;"PHONE"))
 (for-each (lambda (str)
             (unless (getenv str)
               (format (current-error-port)
@@ -343,29 +349,9 @@
 (define account-list
   (list
     lysator
-    gmail
+    ;;gmail
     liu
-    liu-work
-    ;; guckel
-    ;; valberedningen
-    ;; propaganda
-    formulastudent
-    admittansen
-
-   ;; guckel
-   ;; valberedningen
-   pq
-   ;; qurator
-   ;; aktivitet
-   ;; info
-   ;; kassor
-   ;; admin
-   ;; intendent
-   ;; medlem
-   ;; it
-   ;; sekreterare
-   ;; lokal
-   ;; propaganda
+    ;;liu-work
 
     ))
 
@@ -393,7 +379,7 @@
     "Embedding passwords in file"
     "Leaving passwords in manager"))
 (newline)
-
+#;
 (with-output-to-file
   (format #f "~a/profile.d/private-mailconf.sh.~a"
           (or (getenv "XDG_CONFIG_HOME")
